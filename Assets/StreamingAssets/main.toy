@@ -1,0 +1,7 @@
+import "Visual";
+
+LoadBackground("waifu1.png");
+LoadBackground("waifu2.png");
+LoadBackground("waifu3.png");
+LoadBackground("waifu4.png");
+LoadBackground("waifu5.png");
