@@ -9,7 +9,8 @@ public class Timeline {
 	public enum EventType {
 		LOAD_BACKGROUND,
 		LOAD_CHARACTER_IMAGE,
-		UNLOAD_CHARACTER,
+		UNLOAD_CHARACTER_IMAGE,
+		SET_CHARACTER_POSITION,
 		SET_TEXT,
 	};
 
@@ -71,7 +72,7 @@ public class Timeline {
 
 	static void ExecuteEvent(bool undo = false) {
 		switch(eventList[counter].type) {
-			case EventType.LOAD_BACKGROUND:
+			case EventType.LOAD_BACKGROUND: {
 				GameObject bg = GameObject.Find("BackgroundImage");
 
 				if (bg == null) {
@@ -93,9 +94,40 @@ public class Timeline {
 				}
 
 				return;
+			}
 
-			case EventType.LOAD_CHARACTER_IMAGE:
-				GameObject go = (GameObject)eventList[counter].arguments[0];
+			case EventType.LOAD_CHARACTER_IMAGE: {
+				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
+
+				GameObject go = (GameObject)eventList[counter].arguments[1];
+
+				//handle undos
+				if (undo) {
+					go.GetComponent<SpriteRenderer>().sprite = (Sprite)eventList[counter].undo;
+					if ((Sprite)eventList[counter].undo == null) {
+						character.RemovePositionAt(character.characterPosition);
+						character.characterPosition = -1;
+					}
+					return;
+				}
+
+				eventList[counter].undo = go.GetComponent<SpriteRenderer>().sprite;
+
+				string name = (string)eventList[counter].arguments[2];
+				string clothes = (string)eventList[counter].arguments[3];
+				string expression = (string)eventList[counter].arguments[4];
+
+				go.GetComponent<SpriteRenderer>().sprite = SpriteLoader($"{name}-{clothes}-{expression}.png");
+
+				character.SetPos(character.characterPosition);
+
+				return;
+			}
+
+			case EventType.UNLOAD_CHARACTER_IMAGE: {
+				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
+
+				GameObject go = (GameObject)eventList[counter].arguments[1];
 
 				//handle undos
 				if (undo) {
@@ -105,15 +137,29 @@ public class Timeline {
 
 				eventList[counter].undo = go.GetComponent<SpriteRenderer>().sprite;
 
-				string name = (string)eventList[counter].arguments[1];
-				string clothes = (string)eventList[counter].arguments[2];
-				string expression = (string)eventList[counter].arguments[3];
+				go.GetComponent<SpriteRenderer>().sprite = null;
 
-				go.GetComponent<SpriteRenderer>().sprite = SpriteLoader($"{name}-{clothes}-{expression}.png");
+				character.RemovePositionAt(character.characterPosition);
 
 				return;
+			}
 
-			//TODO: character manipulation
+			case EventType.SET_CHARACTER_POSITION: {
+				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
+
+				if (undo) {
+					character.SetPos((int)eventList[counter].undo);
+					return;
+				} else {
+					eventList[counter].undo = character.characterPosition;
+				}
+
+				character.SetPos((int)eventList[counter].arguments[2]);
+
+				return;
+			}
+
+			//TODO: character position manipulation
 
 			//TODO: text manipulation
 

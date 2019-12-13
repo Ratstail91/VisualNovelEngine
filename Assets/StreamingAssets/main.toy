@@ -3,16 +3,18 @@ import "Visual";
 LoadBackground("waifu1.png");
 
 const hanako = LoadCharacter("Hanako", "purple");
-
-LoadBackground("waifu2.png");
-LoadBackground("waifu3.png");
-LoadBackground("waifu4.png");
-LoadBackground("waifu5.png");
-
 const lilly = LoadCharacter("Lilly", "yellow");
+const emi = LoadCharacter("Lilly", "pink");
+const shizune = LoadCharacter("Lilly", "blue");
+const rin = LoadCharacter("Lilly", "red");
 
-hanako.LoadImage("smile", true);
+lilly.LoadImage("smile", false);
+emi.LoadImage("casual-default", false);
+shizune.LoadImage("casual-smile", false);
+rin.LoadImage("pajamas-default", false);
 
-hanako.LoadImage("casual-smile", true);
-
-hanako.LoadImage("default-smile", true);
+hanako.SetPosition(1, true);
+hanako.SetPosition(2, true);
+hanako.SetPosition(3, true);
+hanako.SetPosition(4, true);
+hanako.SetPosition(1, true);
