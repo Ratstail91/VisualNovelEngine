@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Toy {
-	namespace Library {
+	namespace Plugin {
 		public class Visual : IPlugin {
 			//singleton pattern
 			public IPlugin Singleton {
@@ -53,12 +53,19 @@ namespace Toy {
 				public override string ToString() { return "<native function>"; }
 
 				public int Arity() {
-					return 0;
+					return 2;
 				}
 
 				public object Call(Interpreter interpreter, Token token, List<object> arguments) {
-					//TODO: character objects
-					return null;
+					if (!(arguments[0] is string)) {
+						throw new ErrorHandler.RuntimeError(token, "Unexpected type received (expected string)");
+					}
+
+					if (!(arguments[1] is string)) {
+						throw new ErrorHandler.RuntimeError(token, "Unexpected type received (expected string)");
+					}
+
+					return new PluginExtras.Character((string)arguments[0], (string)arguments[1]);
 				}
 			}
 
@@ -74,7 +81,7 @@ namespace Toy {
 						throw new ErrorHandler.RuntimeError(token, "Unexpected type received (expected string)");
 					}
 
-					Timeline.PushEvent(Timeline.EventType.LOAD_BACKGROUND, arguments);
+					Timeline.PushEvent(Timeline.EventType.LOAD_BACKGROUND, arguments, false);
 
 					return null;
 				}

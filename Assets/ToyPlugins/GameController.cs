@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 	void Start() {
-		Timeline.FirstEvent();
+		Timeline.Restart();
 	}
 
 	void Update() {

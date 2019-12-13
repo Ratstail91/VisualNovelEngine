@@ -1,7 +1,18 @@
 import "Visual";
 
 LoadBackground("waifu1.png");
+
+const hanako = LoadCharacter("Hanako", "purple");
+
 LoadBackground("waifu2.png");
 LoadBackground("waifu3.png");
 LoadBackground("waifu4.png");
 LoadBackground("waifu5.png");
+
+const lilly = LoadCharacter("Lilly", "yellow");
+
+hanako.LoadImage("smile", true);
+
+hanako.LoadImage("casual-smile", true);
+
+hanako.LoadImage("default-smile", true);
