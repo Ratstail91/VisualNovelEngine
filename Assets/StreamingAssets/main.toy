@@ -2,11 +2,29 @@ import "Visual";
 
 LoadBackground("waifu1.png");
 
+const narrator = LoadCharacter("", "black");
 const hanako = LoadCharacter("Hanako", "purple");
-const lilly = LoadCharacter("Lilly", "yellow");
+const lilly = LoadCharacter("Lilly", "#FF0000");
 const emi = LoadCharacter("Lilly", "pink");
 const shizune = LoadCharacter("Lilly", "blue");
 const rin = LoadCharacter("Lilly", "red");
+
+hanako
+  <| "Hello world"
+  <| "It's dangerous to go alone!"
+  <| "Take this!"
+;
+
+lilly
+  <| "Foo"
+  <| "bar"
+  <| "bazz"
+;
+
+narrator
+  <| "Well, this is awkward."
+  <| ""
+;
 
 lilly.LoadImage("smile", false);
 emi.LoadImage("casual-default", false);

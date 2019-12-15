@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Timeline {
 	//structures
@@ -147,19 +148,52 @@ public class Timeline {
 			case EventType.SET_CHARACTER_POSITION: {
 				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
 
+				//handle undos
 				if (undo) {
 					character.SetPos((int)eventList[counter].undo);
 					return;
-				} else {
-					eventList[counter].undo = character.characterPosition;
 				}
+
+				eventList[counter].undo = character.characterPosition;
 
 				character.SetPos((int)eventList[counter].arguments[2]);
 
 				return;
 			}
 
-			//TODO: character position manipulation
+			case EventType.SET_TEXT: {
+				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
+
+				GameObject title = GameObject.Find("TitleText");
+				GameObject main = GameObject.Find("MainText");
+
+				//handle undos
+				if (undo) {
+					var t = (Tuple<Color, string, string>)eventList[counter].undo;
+
+					title.GetComponent<TextMeshProUGUI>().color = t.Item1;
+					title.GetComponent<TextMeshProUGUI>().text = t.Item2;
+					main.GetComponent<TextMeshProUGUI>().color = t.Item1;
+					main.GetComponent<TextMeshProUGUI>().text = t.Item3;
+					return;
+				}
+
+				eventList[counter].undo = new Tuple<Color, string, string>(
+					title.GetComponent<TextMeshProUGUI>().color,
+					title.GetComponent<TextMeshProUGUI>().text,
+					main.GetComponent<TextMeshProUGUI>().text
+				);
+
+				Color color = Color.clear;
+				ColorUtility.TryParseHtmlString(character.characterColor, out color);
+
+				title.GetComponent<TextMeshProUGUI>().color = color;
+				title.GetComponent<TextMeshProUGUI>().text = character.characterName;
+				main.GetComponent<TextMeshProUGUI>().color = color;
+				main.GetComponent<TextMeshProUGUI>().text = (string)eventList[counter].arguments[1];
+
+				return;
+			}
 
 			//TODO: text manipulation
 

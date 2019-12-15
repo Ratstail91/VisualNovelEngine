@@ -16,10 +16,10 @@ namespace Toy {
 
 			//members
 			GameObject gameObject;
-			string characterName = "default";
+			public string characterName = "default";
 			string characterClothes = "default";
 			string characterExpression = "default";
-			string characterColor;
+			public string characterColor = "white";
 			public int characterPosition = -1;
 			public static int characterCount = 0;
 			static List<Character> characterList = new List<Character>(); //for position rubbish
@@ -48,7 +48,9 @@ namespace Toy {
 					characterExpression = words[2];
 				}
 
-				loadImage.PushLoadImageEvent(true);
+				if (characterName.Length > 0) {
+					loadImage.PushLoadImageEvent(true);
+				}
 			}
 
 			//ICallable
@@ -57,7 +59,12 @@ namespace Toy {
 			}
 
 			public object Call(Interpreter interpreter, Token token, List<object> arguments) {
-				//TODO: call character(arg)
+				if (!(arguments[0] is string)) {
+					throw new ErrorHandler.RuntimeError(token, "Unexpected type received (expected string)");
+				}
+
+				Timeline.PushEvent(Timeline.EventType.SET_TEXT, new List<object>() { this, arguments[0] }, true);
+
 				return null;
 			}
 
