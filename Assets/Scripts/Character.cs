@@ -200,7 +200,11 @@ namespace Toy {
 				characterPosition = Mathf.Clamp(characterPosition, 0, characterList.Count - 1);
 
 				if (characterList.Count >= 2) {
-					gameObject.GetComponent<Rigidbody2D>().position = new Vector2(-Screen.width/100 + Screen.width/(characterList.Count * 100f) + (Screen.width/50f * characterPosition / characterList.Count), gameObject.GetComponent<Rigidbody2D>().position.y);
+					gameObject.GetComponent<Rigidbody2D>().position = new Vector2(
+						//complex, I know, but this places the GameObjects correctly in a horizontal line
+						-Screen.width/100 + Screen.width/(characterList.Count * 100f) + (Screen.width/50f * characterPosition / characterList.Count),
+						gameObject.GetComponent<Rigidbody2D>().position.y
+					);
 				} else {
 					gameObject.GetComponent<Rigidbody2D>().position = new Vector2(0, 0);
 				}

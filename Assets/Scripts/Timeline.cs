@@ -43,7 +43,7 @@ public class Timeline {
 	public static void Restart() {
 		if (dialogCanvas == null) {
 			dialogCanvas = GameObject.Find("DialogCanvas");
-			dialogCanvas.active = false;
+			dialogCanvas.SetActive(false);
 		}
 
 		counter = 0;

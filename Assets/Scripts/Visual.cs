@@ -39,7 +39,7 @@ namespace Toy {
 				public object Property(Interpreter interpreter, Token token, object argument) {
 					string propertyName = (string)argument;
 
-					switch(propertyName) { //TODO: string constants (split(), format())
+					switch(propertyName) {
 						case "LoadCharacter": return loadCharacter;
 						case "LoadBackground": return loadBackground;
 						default:
