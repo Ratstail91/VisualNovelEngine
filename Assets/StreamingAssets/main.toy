@@ -36,3 +36,5 @@ hanako.SetPosition(2, true);
 hanako.SetPosition(3, true);
 hanako.SetPosition(4, true);
 hanako.SetPosition(1, true);
+
+//TODO: access the gameobject in a wrapper

@@ -33,12 +33,19 @@ public class Timeline {
 	public static List<Event> eventList = new List<Event>();
 	static int counter = 0;
 
+	static GameObject dialogCanvas = null;
+
 	//accessors/mutators
 	public static void PushEvent(EventType type, List<object> arguments, bool block) {
 		eventList.Add(new Event(type, arguments, block));
 	}
 
 	public static void Restart() {
+		if (dialogCanvas == null) {
+			dialogCanvas = GameObject.Find("DialogCanvas");
+			dialogCanvas.active = false;
+		}
+
 		counter = 0;
 		ExecuteEvent();
 		if (!eventList[counter].block) {
@@ -164,6 +171,7 @@ public class Timeline {
 			case EventType.SET_TEXT: {
 				Toy.PluginExtras.Character character = (Toy.PluginExtras.Character)eventList[counter].arguments[0];
 
+				dialogCanvas.SetActive(true);
 				GameObject title = GameObject.Find("TitleText");
 				GameObject main = GameObject.Find("MainText");
 
@@ -175,6 +183,9 @@ public class Timeline {
 					title.GetComponent<TextMeshProUGUI>().text = t.Item2;
 					main.GetComponent<TextMeshProUGUI>().color = t.Item1;
 					main.GetComponent<TextMeshProUGUI>().text = t.Item3;
+
+					dialogCanvas.SetActive(main.GetComponent<TextMeshProUGUI>().text.Length > 0);
+
 					return;
 				}
 
@@ -191,6 +202,8 @@ public class Timeline {
 				title.GetComponent<TextMeshProUGUI>().text = character.characterName;
 				main.GetComponent<TextMeshProUGUI>().color = color;
 				main.GetComponent<TextMeshProUGUI>().text = (string)eventList[counter].arguments[1];
+
+				dialogCanvas.SetActive(main.GetComponent<TextMeshProUGUI>().text.Length > 0);
 
 				return;
 			}
